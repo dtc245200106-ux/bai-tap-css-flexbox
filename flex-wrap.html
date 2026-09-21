@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS flex-wrap Property</title>
+        <style>
+            /* ============================================
+               ĐỊNH DẠNG CHUNG
+               ============================================ */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 20px 40px;
+                line-height: 1.6;
+            }
+
+            h1 {
+                text-align: center;
+                color: #2196F3;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                color: #673AB7;
+                margin-top: 35px;
+                margin-bottom: 10px;
+                border-bottom: 2px solid #673AB7;
+                padding-bottom: 5px;
+            }
+
+            .note {
+                background-color: #fff;
+                border-left: 5px solid #2196F3;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+
+            .note code {
+                background-color: #f0f0f0;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-family: Consolas, monospace;
+                color: #d32f2f;
+            }
+
+            /* ============================================
+               FLEX CONTAINER CHUNG
+               ============================================ */
+            .flex-container {
+                display: flex;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+                margin-bottom: 25px;
+                border: 2px dashed #999;
+                /* Chiều rộng giới hạn để thấy rõ wrap */
+                max-width: 600px;
+            }
+
+            /* Các item trong flex container */
+            .flex-container > div {
+                background-color: #2196F3;
+                color: white;
+                padding: 25px 20px;
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 4px;
+                margin: 5px;
+                min-width: 100px;
+            }
+
+            /* ============================================
+               1. flex-wrap: nowrap (mặc định)
+               ============================================ */
+            .example-nowrap {
+                flex-wrap: nowrap;
+            }
+
+            /* ============================================
+               2. flex-wrap: wrap
+               ============================================ */
+            .example-wrap {
+                flex-wrap: wrap;
+            }
+
+            /* ============================================
+               3. flex-wrap: wrap-reverse
+               ============================================ */
+            .example-wrap-reverse {
+                flex-wrap: wrap-reverse;
+            }
+
+            /* ============================================
+               4. flex-wrap: initial
+               ============================================ */
+            .example-initial {
+                flex-wrap: initial;   /* = nowrap */
+            }
+
+            /* ============================================
+               5. So sánh khi có flex-direction: column
+               ============================================ */
+            .example-column {
+                flex-direction: column;
+                flex-wrap: wrap;
+                height: 300px;
+                max-width: 100%;
+            }
+
+            /* ============================================
+               6. Layout thực tế: Card Grid với wrap
+               ============================================ */
+            .card-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                background-color: #f9f9f9;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .card {
+                flex: 1 1 200px;   /* grow shrink basis */
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+                transition: transform 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .card h3 {
+                color: #2196F3;
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #666;
+            }
+
+            /* ============================================
+               7. Navigation với wrap
+               ============================================ */
+            .nav-wrap {
+                display: flex;
+                flex-wrap: wrap;
+                background-color: #333;
+                border-radius: 6px;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .nav-wrap a {
+                flex: 1 1 auto;
+                color: white;
+                text-decoration: none;
+                padding: 15px 25px;
+                text-align: center;
+                font-size: 14px;
+                transition: background-color 0.3s;
+                min-width: 100px;
+            }
+
+            .nav-wrap a:hover {
+                background-color: #2196F3;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS flex-wrap Property</h1>
+
+        <!-- ============================================
+             1. nowrap (mặc định)
+             ============================================ -->
+        <h2>1. flex-wrap: nowrap (mặc định)</h2>
+        <div class="note">
+            <code>flex-wrap: nowrap;</code> — Các item <b>không xuống dòng</b>,
+            dù tràn ra ngoài container.
+        </div>
+        <div class="flex-container example-nowrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+        </div>
+
+        <!-- ============================================
+             2. wrap
+             ============================================ -->
+        <h2>2. flex-wrap: wrap</h2>
+        <div class="note">
+            <code>flex-wrap: wrap;</code> — Các item <b>tự động xuống dòng</b>
+            khi không đủ chỗ.
+        </div>
+        <div class="flex-container example-wrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </div>
+
+        <!-- ============================================
+             3. wrap-reverse
+             ============================================ -->
+        <h2>3. flex-wrap: wrap-reverse</h2>
+        <div class="note">
+            <code>flex-wrap: wrap-reverse;</code> — Các item xuống dòng
+            nhưng <b>đảo ngược thứ tự</b> (dòng đầu ở dưới cùng).
+        </div>
+        <div class="flex-container example-wrap-reverse">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </div>
+
+        <!-- ============================================
+             4. initial
+             ============================================ -->
+        <h2>4. flex-wrap: initial</h2>
+        <div class="note">
+            <code>flex-wrap: initial;</code> — Đặt về giá trị mặc định (= <code>nowrap</code>).
+        </div>
+        <div class="flex-container example-initial">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+        </div>
+
+        <!-- ============================================
+             5. Kết hợp với flex-direction: column
+             ============================================ -->
+        <h2>5. Kết hợp với flex-direction: column</h2>
+        <div class="note">
+            <code>flex-direction: column; flex-wrap: wrap;</code> —
+            Các item xếp dọc, khi hết chỗ sẽ tạo cột mới.
+        </div>
+        <div class="flex-container example-column">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+
+        <!-- ============================================
+             6. Layout thực tế: Card Grid
+             ============================================ -->
+        <h2>6. Layout thực tế: Card Grid</h2>
+        <div class="note">
+            Sử dụng <code>flex-wrap: wrap</code> và
+            <code>flex: 1 1 200px</code> để tạo grid card responsive.
+            <b>Thu nhỏ cửa sổ để thấy!</b>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Card 1</h3>
+                <p>Nội dung mô tả của card thứ nhất. Tự động xuống dòng khi cần.</p>
+            </div>
+            <div class="card">
+                <h3>Card 2</h3>
+                <p>Nội dung mô tả của card thứ hai.</p>
+            </div>
+            <div class="card">
+                <h3>Card 3</h3>
+                <p>Nội dung mô tả của card thứ ba.</p>
+            </div>
+            <div class="card">
+                <h3>Card 4</h3>
+                <p>Nội dung mô tả của card thứ tư.</p>
+            </div>
+            <div class="card">
+                <h3>Card 5</h3>
+                <p>Nội dung mô tả của card thứ năm.</p>
+            </div>
+            <div class="card">
+                <h3>Card 6</h3>
+                <p>Nội dung mô tả của card thứ sáu.</p>
+            </div>
+        </div>
+
+        <!-- ============================================
+             7. Navigation với wrap
+             ============================================ -->
+        <h2>7. Navigation với wrap</h2>
+        <div class="note">
+            Menu điều hướng sử dụng <code>flex-wrap: wrap</code> —
+            tự động xuống dòng khi màn hình nhỏ.
+        </div>
+        <nav class="nav-wrap">
+            <a href="#">Trang chủ</a>
+            <a href="#">Giới thiệu</a>
+            <a href="#">Dịch vụ</a>
+            <a href="#">Sản phẩm</a>
+            <a href="#">Tin tức</a>
+            <a href="#">Liên hệ</a>
+        </nav>
+    </body>
+</html>
