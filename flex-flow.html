@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS flex-flow Property</title>
+        <style>
+            /* ============================================
+               ĐỊNH DẠNG CHUNG
+               ============================================ */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 20px 40px;
+                line-height: 1.6;
+            }
+
+            h1 {
+                text-align: center;
+                color: #2196F3;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                color: #673AB7;
+                margin-top: 35px;
+                margin-bottom: 10px;
+                border-bottom: 2px solid #673AB7;
+                padding-bottom: 5px;
+            }
+
+            .note {
+                background-color: #fff;
+                border-left: 5px solid #2196F3;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+
+            .note code {
+                background-color: #f0f0f0;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-family: Consolas, monospace;
+                color: #d32f2f;
+            }
+
+            /* ============================================
+               FLEX CONTAINER CHUNG
+               ============================================ */
+            .flex-container {
+                display: flex;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+                margin-bottom: 25px;
+                border: 2px dashed #999;
+                gap: 10px;
+                /* Chiều cao cố định để thấy rõ column */
+                min-height: 100px;
+            }
+
+            /* Các item trong flex container */
+            .flex-container > div {
+                background-color: #2196F3;
+                color: white;
+                padding: 20px 25px;
+                text-align: center;
+                font-size: 15px;
+                font-weight: bold;
+                border-radius: 4px;
+                min-width: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ============================================
+               1. row nowrap (mặc định)
+               ============================================ */
+            .example-row-nowrap {
+                flex-flow: row nowrap;
+            }
+
+            /* ============================================
+               2. row wrap
+               ============================================ */
+            .example-row-wrap {
+                flex-flow: row wrap;
+                max-width: 500px;
+            }
+
+            /* ============================================
+               3. row-reverse nowrap
+               ============================================ */
+            .example-row-reverse {
+                flex-flow: row-reverse nowrap;
+            }
+
+            /* ============================================
+               4. row-reverse wrap
+               ============================================ */
+            .example-row-reverse-wrap {
+                flex-flow: row-reverse wrap;
+                max-width: 500px;
+            }
+
+            /* ============================================
+               5. column nowrap
+               ============================================ */
+            .example-column-nowrap {
+                flex-flow: column nowrap;
+                min-height: 300px;
+            }
+
+            /* ============================================
+               6. column wrap
+               ============================================ */
+            .example-column-wrap {
+                flex-flow: column wrap;
+                height: 200px;
+                max-width: 100%;
+            }
+
+            /* ============================================
+               7. column-reverse nowrap
+               ============================================ */
+            .example-column-reverse {
+                flex-flow: column-reverse nowrap;
+                min-height: 300px;
+            }
+
+            /* ============================================
+               8. column-reverse wrap
+               ============================================ */
+            .example-column-reverse-wrap {
+                flex-flow: column-reverse wrap;
+                height: 200px;
+                max-width: 100%;
+            }
+
+            /* ============================================
+               9. Layout thực tế: Navigation
+               ============================================ */
+            .navbar {
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: center;
+                background-color: #333;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+
+            .navbar a {
+                color: white;
+                text-decoration: none;
+                padding: 15px 25px;
+                font-size: 14px;
+                transition: background-color 0.3s;
+            }
+
+            .navbar a:hover {
+                background-color: #2196F3;
+            }
+
+            /* ============================================
+               10. Layout thực tế: Card Grid
+               ============================================ */
+            .card-grid {
+                display: flex;
+                flex-flow: row wrap;
+                gap: 15px;
+                background-color: #f9f9f9;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .card {
+                flex: 1 1 200px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+                transition: transform 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .card h3 {
+                color: #2196F3;
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS flex-flow Property</h1>
+
+        <!-- ============================================
+             1. row nowrap (mặc định)
+             ============================================ -->
+        <h2>1. flex-flow: row nowrap (mặc định)</h2>
+        <div class="note">
+            <code>flex-flow: row nowrap;</code> — Item xếp hàng ngang,
+            <b>không xuống dòng</b>.
+        </div>
+        <div class="flex-container example-row-nowrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+        </div>
+
+        <!-- ============================================
+             2. row wrap
+             ============================================ -->
+        <h2>2. flex-flow: row wrap</h2>
+        <div class="note">
+            <code>flex-flow: row wrap;</code> — Item xếp hàng ngang và
+            <b>tự động xuống dòng</b> khi hết chỗ.
+        </div>
+        <div class="flex-container example-row-wrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </div>
+
+        <!-- ============================================
+             3. row-reverse nowrap
+             ============================================ -->
+        <h2>3. flex-flow: row-reverse nowrap</h2>
+        <div class="note">
+            <code>flex-flow: row-reverse nowrap;</code> — Item xếp hàng ngang
+            theo <b>chiều ngược lại</b> (từ phải sang trái).
+        </div>
+        <div class="flex-container example-row-reverse">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+        </div>
+
+        <!-- ============================================
+             4. row-reverse wrap
+             ============================================ -->
+        <h2>4. flex-flow: row-reverse wrap</h2>
+        <div class="note">
+            <code>flex-flow: row-reverse wrap;</code> — Item xếp hàng ngang
+            ngược và <b>tự động xuống dòng</b>.
+        </div>
+        <div class="flex-container example-row-reverse-wrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </div>
+
+        <!-- ============================================
+             5. column nowrap
+             ============================================ -->
+        <h2>5. flex-flow: column nowrap</h2>
+        <div class="note">
+            <code>flex-flow: column nowrap;</code> — Item xếp
+            <b>dọc theo cột</b>, không xuống dòng.
+        </div>
+        <div class="flex-container example-column-nowrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+        </div>
+
+        <!-- ============================================
+             6. column wrap
+             ============================================ -->
+        <h2>6. flex-flow: column wrap</h2>
+        <div class="note">
+            <code>flex-flow: column wrap;</code> — Item xếp dọc,
+            khi hết chiều cao sẽ <b>tạo cột mới</b> bên phải.
+        </div>
+        <div class="flex-container example-column-wrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+
+        <!-- ============================================
+             7. column-reverse nowrap
+             ============================================ -->
+        <h2>7. flex-flow: column-reverse nowrap</h2>
+        <div class="note">
+            <code>flex-flow: column-reverse nowrap;</code> — Item xếp dọc
+            theo <b>chiều ngược lại</b> (từ dưới lên trên).
+        </div>
+        <div class="flex-container example-column-reverse">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+        </div>
+
+        <!-- ============================================
+             8. column-reverse wrap
+             ============================================ -->
+        <h2>8. flex-flow: column-reverse wrap</h2>
+        <div class="note">
+            <code>flex-flow: column-reverse wrap;</code> — Item xếp dọc
+            ngược và tạo cột mới khi hết chỗ.
+        </div>
+        <div class="flex-container example-column-reverse-wrap">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+
+        <!-- ============================================
+             9. Layout thực tế: Navigation
+             ============================================ -->
+        <h2>9. Layout thực tế: Navigation responsive</h2>
+        <div class="note">
+            Sử dụng <code>flex-flow: row wrap</code> để menu tự động xuống dòng
+            trên màn hình nhỏ.
+        </div>
+        <nav class="navbar">
+            <a href="#">Trang chủ</a>
+            <a href="#">Giới thiệu</a>
+            <a href="#">Dịch vụ</a>
+            <a href="#">Sản phẩm</a>
+            <a href="#">Tin tức</a>
+            <a href="#">Liên hệ</a>
+        </nav>
+
+        <!-- ============================================
+             10. Layout thực tế: Card Grid
+             ============================================ -->
+        <h2>10. Layout thực tế: Card Grid responsive</h2>
+        <div class="note">
+            Sử dụng <code>flex-flow: row wrap</code> kết hợp với
+            <code>flex: 1 1 200px</code> để tạo lưới card tự động.
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Card 1</h3>
+                <p>Nội dung mô tả của card thứ nhất.</p>
+            </div>
+            <div class="card">
+                <h3>Card 2</h3>
+                <p>Nội dung mô tả của card thứ hai.</p>
+            </div>
+            <div class="card">
+                <h3>Card 3</h3>
+                <p>Nội dung mô tả của card thứ ba.</p>
+            </div>
+            <div class="card">
+                <h3>Card 4</h3>
+                <p>Nội dung mô tả của card thứ tư.</p>
+            </div>
+        </div>
+    </body>
+</html>
