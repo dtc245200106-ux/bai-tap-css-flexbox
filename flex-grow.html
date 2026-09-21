@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS flex-grow Property</title>
+        <style>
+            /* ============================================
+               ĐỊNH DẠNG CHUNG
+               ============================================ */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 20px 40px;
+                line-height: 1.6;
+            }
+
+            h1 {
+                text-align: center;
+                color: #2196F3;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                color: #673AB7;
+                margin-top: 35px;
+                margin-bottom: 10px;
+                border-bottom: 2px solid #673AB7;
+                padding-bottom: 5px;
+            }
+
+            .note {
+                background-color: #fff;
+                border-left: 5px solid #2196F3;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+
+            .note code {
+                background-color: #f0f0f0;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-family: Consolas, monospace;
+                color: #d32f2f;
+            }
+
+            /* ============================================
+               FLEX CONTAINER CHUNG
+               ============================================ */
+            .flex-container {
+                display: flex;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+                margin-bottom: 25px;
+                border: 2px dashed #999;
+                gap: 10px;
+            }
+
+            /* Các item trong flex container */
+            .flex-container > div {
+                background-color: #2196F3;
+                color: white;
+                padding: 20px 10px;
+                text-align: center;
+                font-size: 15px;
+                font-weight: bold;
+                border-radius: 4px;
+                min-height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Highlight các item có flex-grow */
+            .highlight-grow {
+                background-color: #e91e63 !important;
+            }
+
+            /* ============================================
+               1. flex-grow: 0 (mặc định)
+               ============================================ */
+            .example-default > div {
+                flex-grow: 0;
+            }
+
+            /* ============================================
+               2. flex-grow: 1 cho tất cả
+               ============================================ */
+            .example-equal > div {
+                flex-grow: 1;
+            }
+
+            /* ============================================
+               3. Chỉ 1 item có flex-grow: 1
+               ============================================ */
+            .example-one > div:nth-child(2) {
+                flex-grow: 1;
+            }
+
+            /* ============================================
+               4. Tỷ lệ khác nhau: 1 vs 2 vs 3
+               ============================================ */
+            .example-ratio > div:nth-child(1) { flex-grow: 1; }
+            .example-ratio > div:nth-child(2) { flex-grow: 2; }
+            .example-ratio > div:nth-child(3) { flex-grow: 3; }
+
+            /* ============================================
+               5. Kết hợp flex-grow + flex-basis
+               ============================================ */
+            .example-basis > div {
+                flex-basis: 100px;
+                flex-grow: 1;
+            }
+
+            /* ============================================
+               6. Layout thực tế: Sidebar + Content
+               ============================================ */
+            .layout {
+                display: flex;
+                gap: 15px;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .layout .sidebar {
+                flex-grow: 0;
+                flex-basis: 250px;
+                background-color: #4CAF50;
+                padding: 20px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .layout .content {
+                flex-grow: 1;
+                background-color: #FF9800;
+                padding: 20px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* ============================================
+               7. Layout 3 cột: main chiếm nhiều nhất
+               ============================================ */
+            .layout-3col {
+                display: flex;
+                gap: 15px;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .layout-3col > div {
+                padding: 20px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .layout-3col .col-left  {
+                flex-grow: 1;
+                background-color: #2196F3;
+            }
+
+            .layout-3col .col-main  {
+                flex-grow: 3;
+                background-color: #e91e63;
+            }
+
+            .layout-3col .col-right {
+                flex-grow: 1;
+                background-color: #4CAF50;
+            }
+
+            /* ============================================
+               8. Layout thực tế: Card responsive
+               ============================================ */
+            .card-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                background-color: #f9f9f9;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .card {
+                flex-basis: 200px;
+                flex-grow: 1;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+                transition: transform 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .card h3 {
+                color: #2196F3;
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #666;
+            }
+
+            /* ============================================
+               9. Navigation bar với flex-grow
+               ============================================ */
+            .navbar {
+                display: flex;
+                background-color: #333;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+
+            .navbar .logo {
+                padding: 15px 25px;
+                background-color: #2196F3;
+                color: white;
+                font-weight: bold;
+                flex-grow: 0;
+            }
+
+            .navbar .nav-items {
+                display: flex;
+                flex-grow: 1;
+                justify-content: flex-end;
+            }
+
+            .navbar .nav-items a {
+                color: white;
+                text-decoration: none;
+                padding: 15px 20px;
+                transition: background-color 0.3s;
+            }
+
+            .navbar .nav-items a:hover {
+                background-color: #2196F3;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS flex-grow Property</h1>
+
+        <!-- ============================================
+             1. Mặc định (0)
+             ============================================ -->
+        <h2>1. flex-grow: 0 (mặc định)</h2>
+        <div class="note">
+            <code>flex-grow: 0;</code> — Tất cả item <b>giữ nguyên kích thước</b>,
+            không giãn ra.
+        </div>
+        <div class="flex-container example-default">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             2. flex-grow: 1 cho tất cả
+             ============================================ -->
+        <h2>2. flex-grow: 1 cho tất cả</h2>
+        <div class="note">
+            <code>flex-grow: 1;</code> — Tất cả item <b>giãn đều</b>
+            để lấp đầy không gian.
+        </div>
+        <div class="flex-container example-equal">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             3. Chỉ 1 item có flex-grow
+             ============================================ -->
+        <h2>3. Chỉ Item 2 có flex-grow: 1</h2>
+        <div class="note">
+            <code>Item 2 { flex-grow: 1; }</code> — Chỉ <b>Item 2</b> giãn ra,
+            các item khác giữ nguyên.
+        </div>
+        <div class="flex-container example-one">
+            <div>Item 1</div>
+            <div class="highlight-grow">Item 2 (grow: 1)</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             4. Tỷ lệ khác nhau
+             ============================================ -->
+        <h2>4. Tỷ lệ: flex-grow 1 - 2 - 3</h2>
+        <div class="note">
+            <code>flex-grow: 1 / 2 / 3;</code> — Item giữa rộng gấp đôi item 1,
+            item 3 rộng gấp ba item 1.
+        </div>
+        <div class="flex-container example-ratio">
+            <div class="highlight-grow">grow: 1</div>
+            <div class="highlight-grow">grow: 2</div>
+            <div class="highlight-grow">grow: 3</div>
+        </div>
+
+        <!-- ============================================
+             5. Kết hợp với flex-basis
+             ============================================ -->
+        <h2>5. Kết hợp: flex-basis: 100px + flex-grow: 1</h2>
+        <div class="note">
+            <code>flex-basis: 100px; flex-grow: 1;</code> — Item bắt đầu từ
+            <b>100px</b>, sau đó giãn đều.
+        </div>
+        <div class="flex-container example-basis">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             6. Sidebar + Content
+             ============================================ -->
+        <h2>6. Layout thực tế: Sidebar + Content</h2>
+        <div class="note">
+            <code>Sidebar { flex-grow: 0; flex-basis: 250px; }</code> và
+            <code>Content { flex-grow: 1; }</code> — Sidebar cố định,
+            Content chiếm phần còn lại.
+        </div>
+        <div class="layout">
+            <div class="sidebar">Sidebar (250px, grow: 0)</div>
+            <div class="content">Content (grow: 1)</div>
+        </div>
+
+        <!-- ============================================
+             7. Layout 3 cột
+             ============================================ -->
+        <h2>7. Layout 3 cột: 1 - 3 - 1</h2>
+        <div class="note">
+            <code>flex-grow: 1 / 3 / 1;</code> — Cột giữa chiếm
+            <b>3 phần</b>, hai cột bên mỗi cột <b>1 phần</b>.
+        </div>
+        <div class="layout-3col">
+            <div class="col-left">Cột trái (grow: 1)</div>
+            <div class="col-main">Cột giữa (grow: 3)</div>
+            <div class="col-right">Cột phải (grow: 1)</div>
+        </div>
+
+        <!-- ============================================
+             8. Card responsive
+             ============================================ -->
+        <h2>8. Layout thực tế: Card responsive</h2>
+        <div class="note">
+            <code>flex-basis: 200px; flex-grow: 1;</code> — Card tự động
+            giãn đều, xuống dòng khi cần. <b>Thu nhỏ cửa sổ để thấy!</b>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Card 1</h3>
+                <p>Nội dung mô tả của card thứ nhất.</p>
+            </div>
+            <div class="card">
+                <h3>Card 2</h3>
+                <p>Nội dung mô tả của card thứ hai.</p>
+            </div>
+            <div class="card">
+                <h3>Card 3</h3>
+                <p>Nội dung mô tả của card thứ ba.</p>
+            </div>
+            <div class="card">
+                <h3>Card 4</h3>
+                <p>Nội dung mô tả của card thứ tư.</p>
+            </div>
+        </div>
+
+        <!-- ============================================
+             9. Navigation bar
+             ============================================ -->
+        <h2>9. Layout thực tế: Navigation bar</h2>
+        <div class="note">
+            <code>Logo { flex-grow: 0; }</code> — Logo giữ nguyên,
+            <code>nav-items { flex-grow: 1; }</code> — Menu chiếm phần còn lại.
+        </div>
+        <nav class="navbar">
+            <div class="logo">MyBrand</div>
+            <div class="nav-items">
+                <a href="#">Trang chủ</a>
+                <a href="#">Giới thiệu</a>
+                <a href="#">Dịch vụ</a>
+                <a href="#">Liên hệ</a>
+            </div>
+        </nav>
+    </body>
+</html>
