@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS flex-basis Property</title>
+        <style>
+            /* ============================================
+               ĐỊNH DẠNG CHUNG
+               ============================================ */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 20px 40px;
+                line-height: 1.6;
+            }
+
+            h1 {
+                text-align: center;
+                color: #2196F3;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                color: #673AB7;
+                margin-top: 35px;
+                margin-bottom: 10px;
+                border-bottom: 2px solid #673AB7;
+                padding-bottom: 5px;
+            }
+
+            .note {
+                background-color: #fff;
+                border-left: 5px solid #2196F3;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+
+            .note code {
+                background-color: #f0f0f0;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-family: Consolas, monospace;
+                color: #d32f2f;
+            }
+
+            /* ============================================
+               FLEX CONTAINER CHUNG
+               ============================================ */
+            .flex-container {
+                display: flex;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+                margin-bottom: 25px;
+                border: 2px dashed #999;
+                gap: 10px;
+            }
+
+            /* Các item trong flex container */
+            .flex-container > div {
+                background-color: #2196F3;
+                color: white;
+                padding: 20px 10px;
+                text-align: center;
+                font-size: 15px;
+                font-weight: bold;
+                border-radius: 4px;
+                min-height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ============================================
+               1. flex-basis: auto (mặc định)
+               ============================================ */
+            .example-auto > div {
+                flex-basis: auto;
+            }
+
+            /* ============================================
+               2. flex-basis: số cụ thể (px)
+               ============================================ */
+            .example-px > div {
+                flex-basis: 150px;
+            }
+
+            /* ============================================
+               3. flex-basis: % 
+               ============================================ */
+            .example-percent > div {
+                flex-basis: 25%;
+            }
+
+            /* ============================================
+               4. flex-basis: các giá trị khác nhau
+               ============================================ */
+            .example-mixed > div:nth-child(1) { flex-basis: 100px; }
+            .example-mixed > div:nth-child(2) { flex-basis: 200px; }
+            .example-mixed > div:nth-child(3) { flex-basis: 150px; }
+
+            /* ============================================
+               5. flex-basis: 0 
+               ============================================ */
+            .example-zero > div {
+                flex-basis: 0;
+                flex-grow: 1;
+            }
+
+            /* ============================================
+               6. flex-basis: content
+               ============================================ */
+            .example-content > div {
+                flex-basis: content;
+            }
+
+            /* ============================================
+               7. Kết hợp với flex-grow
+               ============================================ */
+            .example-grow > div {
+                flex-basis: 100px;
+                flex-grow: 1;
+            }
+
+            /* ============================================
+               8. Kết hợp với flex-shrink
+               ============================================ */
+            .example-shrink > div {
+                flex-basis: 300px;
+                flex-shrink: 1;
+            }
+
+            /* ============================================
+               9. Layout thực tế: Sidebar + Content
+               ============================================ */
+            .layout {
+                display: flex;
+                gap: 15px;
+                background-color: #ddd;
+                padding: 15px;
+                border-radius: 6px;
+                flex-wrap: wrap;
+            }
+
+            .layout .sidebar {
+                flex-basis: 250px;
+                flex-grow: 0;
+                flex-shrink: 0;
+                background-color: #4CAF50;
+                padding: 20px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .layout .content {
+                flex-basis: 0;
+                flex-grow: 1;
+                background-color: #FF9800;
+                padding: 20px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* ============================================
+               10. Layout thực tế: Card Grid
+               ============================================ */
+            .card-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                background-color: #f9f9f9;
+                padding: 15px;
+                border-radius: 6px;
+            }
+
+            .card {
+                flex-basis: calc(33.333% - 10px);
+                flex-grow: 1;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+                transition: transform 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .card h3 {
+                color: #2196F3;
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #666;
+            }
+
+            /* Responsive cho card grid */
+            @media (max-width: 768px) {
+                .card {
+                    flex-basis: calc(50% - 10px);
+                }
+            }
+
+            @media (max-width: 480px) {
+                .card {
+                    flex-basis: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS flex-basis Property</h1>
+
+        <!-- ============================================
+             1. auto (mặc định)
+             ============================================ -->
+        <h2>1. flex-basis: auto (mặc định)</h2>
+        <div class="note">
+            <code>flex-basis: auto;</code> — Kích thước ban đầu dựa trên
+            <b>nội dung</b> của item (hoặc <code>width</code> nếu có).
+        </div>
+        <div class="flex-container example-auto">
+            <div>Item 1</div>
+            <div>Item 2 dài hơn</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             2. số cụ thể (px)
+             ============================================ -->
+        <h2>2. flex-basis: 150px</h2>
+        <div class="note">
+            <code>flex-basis: 150px;</code> — Mỗi item có kích thước ban đầu
+            là <b>150px</b> (trước khi co giãn).
+        </div>
+        <div class="flex-container example-px">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             3. % 
+             ============================================ -->
+        <h2>3. flex-basis: 25%</h2>
+        <div class="note">
+            <code>flex-basis: 25%;</code> — Mỗi item chiếm <b>25%</b>
+            chiều rộng của container.
+        </div>
+        <div class="flex-container example-percent">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+            <div>Item 4</div>
+        </div>
+
+        <!-- ============================================
+             4. Các giá trị khác nhau
+             ============================================ -->
+        <h2>4. flex-basis khác nhau cho từng item</h2>
+        <div class="note">
+            <code>flex-basis: 100px / 200px / 150px;</code> —
+            Mỗi item có kích thước ban đầu khác nhau.
+        </div>
+        <div class="flex-container example-mixed">
+            <div>100px</div>
+            <div>200px</div>
+            <div>150px</div>
+        </div>
+
+        <!-- ============================================
+             5. flex-basis: 0
+             ============================================ -->
+        <h2>5. flex-basis: 0 + flex-grow: 1</h2>
+        <div class="note">
+            <code>flex-basis: 0; flex-grow: 1;</code> — Tất cả item
+            <b>chia đều</b> không gian, bất kể nội dung dài ngắn.
+        </div>
+        <div class="flex-container example-zero">
+            <div>Item 1</div>
+            <div>Item 2 dài hơn nhiều</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             6. flex-basis: content
+             ============================================ -->
+        <h2>6. flex-basis: content</h2>
+        <div class="note">
+            <code>flex-basis: content;</code> — Kích thước dựa trên
+            <b>nội dung</b> của item (tương tự <code>auto</code> nhưng
+            không xét <code>width</code>).
+        </div>
+        <div class="flex-container example-content">
+            <div>Ngắn</div>
+            <div>Nội dung dài hơn</div>
+            <div>Vừa</div>
+        </div>
+
+        <!-- ============================================
+             7. Kết hợp flex-grow
+             ============================================ -->
+        <h2>7. flex-basis: 100px + flex-grow: 1</h2>
+        <div class="note">
+            <code>flex-basis: 100px; flex-grow: 1;</code> — Item bắt đầu từ
+            <b>100px</b>, sau đó giãn đều để lấp đầy không gian còn lại.
+        </div>
+        <div class="flex-container example-grow">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             8. Kết hợp flex-shrink
+             ============================================ -->
+        <h2>8. flex-basis: 300px + flex-shrink: 1</h2>
+        <div class="note">
+            <code>flex-basis: 300px; flex-shrink: 1;</code> — Item bắt đầu từ
+            <b>300px</b>, nhưng sẽ <b>co lại</b> nếu không đủ chỗ.
+        </div>
+        <div class="flex-container example-shrink">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </div>
+
+        <!-- ============================================
+             9. Layout thực tế: Sidebar + Content
+             ============================================ -->
+        <h2>9. Layout thực tế: Sidebar + Content</h2>
+        <div class="note">
+            <code>flex-basis</code> giúp tạo layout với sidebar cố định và
+            content linh hoạt. Sidebar = 250px, Content = phần còn lại.
+        </div>
+        <div class="layout">
+            <div class="sidebar">Sidebar (250px)</div>
+            <div class="content">Content (flex-basis: 0, flex-grow: 1)</div>
+        </div>
+
+        <!-- ============================================
+             10. Layout thực tế: Card Grid
+             ============================================ -->
+        <h2>10. Layout thực tế: Card Grid responsive</h2>
+        <div class="note">
+            <code>flex-basis: calc(33.333% - 10px);</code> — 3 card/dòng.
+            <b>Thu nhỏ cửa sổ</b> để thấy responsive.
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Card 1</h3>
+                <p>Nội dung mô tả của card thứ nhất.</p>
+            </div>
+            <div class="card">
+                <h3>Card 2</h3>
+                <p>Nội dung mô tả của card thứ hai.</p>
+            </div>
+            <div class="card">
+                <h3>Card 3</h3>
+                <p>Nội dung mô tả của card thứ ba.</p>
+            </div>
+            <div class="card">
+                <h3>Card 4</h3>
+                <p>Nội dung mô tả của card thứ tư.</p>
+            </div>
+            <div class="card">
+                <h3>Card 5</h3>
+                <p>Nội dung mô tả của card thứ năm.</p>
+            </div>
+            <div class="card">
+                <h3>Card 6</h3>
+                <p>Nội dung mô tả của card thứ sáu.</p>
+            </div>
+        </div>
+    </body>
+</html>
